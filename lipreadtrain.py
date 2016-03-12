@@ -31,7 +31,7 @@ def save_model(model, save_weight_to, save_topo_to):
 def build_network(max_seqlen=30, image_size=(40, 40), fc_size=128,
                   save_weight_to='untrained_weight.h5', save_topo_to='untrained_topo.json', save_result=True,
                   optimizer='sgd', load_cache=True,
-                  cnn=False,dict_size=51):
+                  cnn=False,dict_size=53):
 
     try:
         if load_cache:
@@ -66,7 +66,7 @@ def build_network(max_seqlen=30, image_size=(40, 40), fc_size=128,
     model.add(LSTM(fc_size, return_sequences=False))
 
     print("Adding Final Dense Layer...")
-    model.add(Dense(51))
+    model.add(Dense(dict_size))
 
     print("Adding Softmax Layer...")
     model.add(Activation('softmax'))

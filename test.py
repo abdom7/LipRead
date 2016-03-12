@@ -1,16 +1,16 @@
 import lipreadtrain
-import random_data as data
-from keras.utils import np_utils, generic_utils
+import random_data
+import real_data
+
+data = random_data
+label_size = 53
+
 
 
 X_train, y_train = data.Train()
-X_test,y_test = data.Test()
+X_test,y_test = data.Test(label_size=label_size)
 
-y_train = np_utils.to_categorical(y_train)
-y_test = np_utils.to_categorical(y_test)
-
-net = lipreadtrain.build_network()
-
+net = lipreadtrain.build_network(dict_size=label_size)
 
 lipreadtrain.train(model=net,
                    X_train=X_train, y_train=y_train,
