@@ -105,7 +105,7 @@ def build_network(max_seqlen=30, image_size=(40, 40), fc_size=128,
 def train(model=None, 
           X_train=[], y_train=[],
           X_test=[], y_test=[], batch_size=100,
-          iter_times=3, show_accuracy=True,
+          iter_times=7, show_accuracy=True,
           save_weight_to='trained_weight.h5',
           save_topo_to='trained_topo.json',
           save_result=True, validation_split=0.1):
