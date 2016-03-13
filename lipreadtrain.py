@@ -9,6 +9,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Masking, TimeDistributedDense
 from keras.layers.embeddings import Embedding
 from keras.layers.recurrent import LSTM
+from keras.optimizers import *
 from keras.datasets import imdb
 import time
 from keras.models import model_from_json
@@ -30,7 +31,9 @@ def save_model(model, save_weight_to, save_topo_to):
 
 def build_network(max_seqlen=30, image_size=(40, 40), fc_size=128,
                   save_weight_to='untrained_weight.h5', save_topo_to='untrained_topo.json', save_result=True,
-                  optimizer='sgd', load_cache=True,
+                  lr=0.001, momentum=0.6,decay=0.0005,nesterov=True,
+                  rho=0.9,epsilon=1e-6,
+                  optimizer='sgd', load_cache=False,
                   cnn=False,dict_size=53):
 
     try:
@@ -72,6 +75,13 @@ def build_network(max_seqlen=30, image_size=(40, 40), fc_size=128,
     model.add(Activation('softmax'))
 
     print("Compiling the model to runnable code, which will take a long time...")
+    if optimizer == 'sgd':
+        optimizer = SGD(lr=lr, momentum=momentum, decay=decay, nesterov=nesterov)
+    elif optimizer == 'rmsprop':
+        optimizer = RMSprop(lr=lr, rho=rho, epsilon=epsilon)
+    elif optimizer == 'adagrad':
+        optimizer = Adagrad(lr=lr, epsilon=epsilon)
+    
     ## Takes my macbook pro 1-2min to finish.    
     model.compile(loss='categorical_crossentropy', optimizer=optimizer)
 
