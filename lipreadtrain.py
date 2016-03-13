@@ -19,7 +19,7 @@ NIL = 0.0
 
 def save_model(model, save_weight_to, save_topo_to):
     json_string = model.to_json()
-    model.save_weights(save_weight_to)
+    model.save_weights(save_weight_to, overwrite=True)
     with open(save_topo_to, 'w') as outfile:
         json.dump(json_string, outfile)
         
@@ -32,8 +32,8 @@ def save_model(model, save_weight_to, save_topo_to):
 def build_network(max_seqlen=30, image_size=(40, 40), fc_size=128,
                   save_weight_to='untrained_weight.h5', save_topo_to='untrained_topo.json', save_result=True,
                   lr=0.001, momentum=0.6,decay=0.0005,nesterov=True,
-                  rho=0.9,epsilon=1e-6,
-                  optimizer='sgd', load_cache=False,
+                  rho=0.9,epsilon=1e-6, 
+                  optimizer='sgd', load_cache=False,   # the optimizer here could be 'sgd', 'adagrad', 'rmsprop'
                   cnn=False,dict_size=53):
 
     try:
