@@ -9,6 +9,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Masking, TimeDistributedDense
 from keras.layers.embeddings import Embedding
 from keras.layers.recurrent import LSTM
+from keras.layers.convolutional import Convolution1D
 from keras.optimizers import *
 from keras.datasets import imdb
 import time
@@ -34,7 +35,7 @@ def build_network(max_seqlen=30, image_size=(40, 40), fc_size=128,
                   lr=0.001, momentum=0.6,decay=0.0005,nesterov=True,
                   rho=0.9,epsilon=1e-6, 
                   optimizer='sgd', load_cache=False,   # the optimizer here could be 'sgd', 'adagrad', 'rmsprop'
-                  cnn=False,dict_size=53):
+                  cnn=False,dict_size=53,filter_length=5):
 
     try:
         if load_cache:
@@ -53,9 +54,11 @@ def build_network(max_seqlen=30, image_size=(40, 40), fc_size=128,
         print("Adding TimeDistributeDense Layer...")    
         model.add(TimeDistributedDense(fc_size, input_shape=(max_seqlen, image_size[0]*image_size[1])))
     else:
-        print("Adding TimeDistributeConvolution Layer...")
+        print("Adding Convolution1D Layer...")
+        model.add(Convolution1D(fc_size, filter_length,input_shape=(max_seqlen, image_size[0]*image_size[1])))
+
         # TODO
-        # Reshape -> conv -> reshape
+        # Reshape -> conv -> reshap
         # model.add(TimeDistributed(Convolution1D(nb_filter, filter_length)))
 
 
@@ -151,9 +154,7 @@ def read_model(weights_filename='trained_weight.h5',
 
 
 def test():
-    print (build_network())
-    print (read_model(weights_filename='untrained_weight.h5',
-                  topo_filename='untrained_topo.json'))
+    print (build_network(cnn=True, save_result=False))
 
 
 ## The data format we probably need:
