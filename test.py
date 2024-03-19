@@ -4,7 +4,7 @@ import real_data
 
 data = random_data
 label_size = 53
-
+# test your data 
 
 
 X_train, y_train = data.Train()
